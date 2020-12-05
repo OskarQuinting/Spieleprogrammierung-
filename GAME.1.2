@@ -1,0 +1,65 @@
+import pygame                                                              
+import os                                                                  
+import random                                                                
+from pygame.constants import(K_ESCAPE)                                      
+
+
+class Settings(object):
+    def __init__(self):
+        self.width = 700                                                    
+        self.height = 400                                                  
+        self.fps = 60                                                       
+        self.file_path = os.path.dirname(os.path.abspath(__file__))         
+        self.images_path = os.path.join(self.file_path, "pictures")         
+
+    def get_dim(self):
+        return (self.width, self.height)                                     
+
+class player(object):
+    def __init__(self):
+        self.image = self.pygame.image.load(os.path.join(self.settings.images_path, "Bird.jpeg")).convert()
+        self.image = pygame.transform.scale(self.image(40,40))
+        self.rect = self.image.get_rect()
+        self.rect.centrex = Setting.self.width // 2
+        self.rect.bottom = Setting.self.heighy - 30
+
+    def draw(self,screen):
+        screen.blit(self.image, self.rect)
+        
+class Game(object):
+    def __init__(self, pygame, settings, player):
+        self.pygame = pygame
+        self.settings = settings
+        self.player = player
+        self.screen = pygame.display.set_mode(settings.get_dim())            
+        self.background = self.pygame.image.load(os.path.join(self.settings.images_path, "Berg.jpeg")).convert()    
+        self.background_rect = self.background.get_rect()    
+        self.clock = pygame.time.Clock()
+        self.done = False
+
+    def run(self):
+        while not self.done:
+            self.clock.tick(self.settings.fps)                              
+            for event in self.pygame.event.get():
+                if event.type == self.pygame.QUIT:
+                    self.done = True
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):    
+                pygame.quit()
+
+            self.screen.fill((0, 0, 0))                                      
+            self.screen.blit(self.background, self.background_rect)         
+            self.pygame.display.flip()                                      
+            player1 = player()
+            player1.draw() 
+
+        
+
+if __name__ == '__main__':
+
+
+    settings = Settings()
+    pygame.init()
+    game = Game(pygame, settings, player)
+    game.run()
+
+    pygame.quit()
